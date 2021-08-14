@@ -3,6 +3,8 @@ version: 1.1.1
 main: plugin.manhunt.manhunt_plugin.ManhuntPlugin
 api-version: 1.17
 commands:
-  manhunt:
+  manhuntStart:
     description: Runs manhunt sim 9000
-    usage: /manhunt name
+    usage: /manhuntStart name
+  manhuntStop:
+    description: Ends manhunt sim 9000

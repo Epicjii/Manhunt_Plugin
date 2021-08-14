@@ -1,26 +1,21 @@
 package plugin.manhunt.manhunt_plugin;
 
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ManhuntPlugin extends JavaPlugin {
 
+    public static ManhuntPlugin instance;
+
+    public static ManhuntPlugin getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
-
-        PluginFunctionality plugin = new PluginFunctionality();
-
-        getServer().getPluginManager().registerEvents(plugin, this);
-
-
-        PluginCommand x = this.getCommand("manhunt");
-        if (x != null) {
-            x.setExecutor(plugin);
-        } else {
-            System.out.println("NullCommandException");
-        }
-
+        instance = this;
+        getCommand("manhuntStart").setExecutor(new ManhuntPluginStart());
+        getCommand("manhuntStop").setExecutor(new ManhuntPluginStop());
     }
 
     @Override
