@@ -1,5 +1,6 @@
 package plugin.manhunt.manhunt_plugin;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class PluginFunctionality implements CommandExecutor, Listener {
     List<Player> nearbyPlayers = new ArrayList<>();
     Player target;
     Location targetlocation;
+    ItemStack compass = new ItemStack(Material.COMPASS);
+    CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
 
     @Override
     public boolean onCommand(
@@ -36,7 +40,7 @@ public class PluginFunctionality implements CommandExecutor, Listener {
                         !playerEntity.getName().equals(target.getName())) {
                     nearbyPlayers.add(player1);
                     player1.getInventory().addItem(createCompass());
-                    player1.setCompassTarget(gettargetlocation(target));
+//                    player1.setCompassTarget(getTargetLocation(target));
                 }
             }
             nearbyPlayers.add(commandSender);
@@ -54,11 +58,17 @@ public class PluginFunctionality implements CommandExecutor, Listener {
     }
 
     public ItemStack createCompass() {
-        targetlocation = gettargetlocation(target);
-        return new ItemStack(Material.COMPASS);
+        targetlocation = getTargetLocation(target);
+        Component name = Component.text(target.getName() + " Tracker");
+
+        compassMeta.displayName(name);
+        compassMeta.setLodestoneTracked(false);
+        compassMeta.setLodestone(targetlocation);
+        compass.setItemMeta(compassMeta);
+        return compass;
     }
 
-    public Location gettargetlocation(Player target) {
+    public Location getTargetLocation(Player target) {
         return target.getLocation();
     }
 
@@ -67,7 +77,7 @@ public class PluginFunctionality implements CommandExecutor, Listener {
         Player player = event.getPlayer();
         if (manhuntOn && nearbyPlayers.contains(player)) {
             player.getInventory().addItem(createCompass());
-            player.setCompassTarget(gettargetlocation(target));
+//            player.setCompassTarget(getTargetLocation(target));
         }
     }
 
@@ -78,7 +88,13 @@ public class PluginFunctionality implements CommandExecutor, Listener {
                 nearbyPlayers.contains(player) &&
                 player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            player.setCompassTarget(gettargetlocation(target));
+            if (target.getLocation().getWorld().getEnvironment() !=
+                    player.getLocation().getWorld().getEnvironment()) {
+                player.sendRawMessage("Target is not in your dimension!");
+                return;
+            }
+            player.getInventory().setItemInMainHand(createCompass());
+            player.sendRawMessage("Tracking " + target.getName());
             target.playNote(target.getLocation(), Instrument.BELL, Note.sharp(1, Note.Tone.C));
         }
     }
