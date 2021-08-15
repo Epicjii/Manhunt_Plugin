@@ -4,6 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,6 +24,15 @@ public class ManhuntPluginStop implements CommandExecutor {
         }
         for (ManhuntGame manhuntGame : currentGames) {
             if (manhuntGame.nearbyPlayers.contains(sender)) {
+                CompassMeta compassMeta = manhuntGame.compassMeta.clone();
+                ItemStack compass = manhuntGame.compass;
+                for (Player player : manhuntGame.nearbyPlayers) {
+                    if (player.getInventory().contains(compass) && compassMeta.hasLodestone()) {
+                        player.getInventory().remove(compass);
+                    }
+                    player.sendRawMessage("The Manhunt has ended!");
+                }
+                manhuntGame.target.sendRawMessage("You are safe.... for now.");
                 currentGames.remove(manhuntGame);
                 manhuntGame.unRegisterEvent();
                 return true;

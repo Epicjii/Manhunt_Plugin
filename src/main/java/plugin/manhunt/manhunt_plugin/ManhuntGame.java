@@ -1,6 +1,7 @@
 package plugin.manhunt.manhunt_plugin;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -31,17 +32,19 @@ public class ManhuntGame implements Listener {
         if (sender instanceof Player commandSender) {
             target = playerNameParser(args);
             for (Entity playerEntity : commandSender.getNearbyEntities(15, 15, 15)) {
-                if (playerEntity instanceof Player player1
+                if (playerEntity instanceof Player player
                         && !playerEntity.getName().equals(target.getName())
                 ) {
-                    nearbyPlayers.add(player1);
-                    player1.getInventory().addItem(createCompass());
+                    nearbyPlayers.add(player);
+                    player.getInventory().addItem(createCompass());
+                    player.sendRawMessage("The hunt is on! Your target is: " + target.getName());
                 }
             }
             nearbyPlayers.add(commandSender);
-            if (!commandSender.getName().equals(target.getName())) {
+            if (!commandSender.getName().equals(target.getName()) || args[1].equals("debug")) {
                 commandSender.getInventory().addItem(createCompass());
             }
+            target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
             registerEvent();
             manhuntOn = true;
         }
@@ -50,6 +53,7 @@ public class ManhuntGame implements Listener {
     public void registerEvent() {
         getServer().getPluginManager().registerEvents(this, ManhuntPlugin.getInstance());
     }
+
     public void unRegisterEvent() {
         HandlerList.unregisterAll(this);
     }
@@ -60,14 +64,14 @@ public class ManhuntGame implements Listener {
 
     public ItemStack createCompass() {
         targetlocation = getTargetLocation(target);
-        Component name = Component.text(target.getName() + " Tracker");
-
+        Component name = Component.text(target.getName() + " Tracker").color(TextColor.color(128, 0, 128));
         compassMeta.displayName(name);
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(targetlocation);
         compass.setItemMeta(compassMeta);
         return compass;
     }
+
 
     public Location getTargetLocation(Player target) {
         return target.getLocation();
@@ -90,11 +94,13 @@ public class ManhuntGame implements Listener {
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (target.getLocation().getWorld().getEnvironment() !=
                     player.getLocation().getWorld().getEnvironment()) {
-                player.sendRawMessage("Target is not in your dimension!");
+                player.sendRawMessage("The target is not in your dimension!");
                 return;
             }
             player.getInventory().setItemInMainHand(createCompass());
-            player.sendRawMessage("Tracking " + target.getName());
+            Component tracking = Component.text("Tracking ");
+            Component trackee = Component.text(target.getName()).color(TextColor.color(0, 191, 255));
+            player.sendMessage(tracking.append(trackee));
             target.playNote(target.getLocation(), Instrument.BELL, Note.sharp(1, Note.Tone.C));
         }
     }
