@@ -41,7 +41,7 @@ public class ManhuntGame implements Listener {
                 }
             }
             nearbyPlayers.add(commandSender);
-            if (!commandSender.getName().equals(target.getName()) || args[1].equals("debug")) {
+            if (!commandSender.getName().equals(target.getName()) || args.length > 1) {
                 commandSender.getInventory().addItem(createCompass());
             }
             target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
@@ -80,7 +80,7 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if (manhuntOn && nearbyPlayers.contains(player)) {
+        if (manhuntOn && nearbyPlayers.contains(player) && !player.getName().equals(target.getName())) {
             player.getInventory().addItem(createCompass());
         }
     }
