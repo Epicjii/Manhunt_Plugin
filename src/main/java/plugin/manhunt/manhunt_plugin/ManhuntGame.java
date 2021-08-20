@@ -65,6 +65,9 @@ public class ManhuntGame implements Listener {
     public ItemStack createCompass() {
         targetlocation = getTargetLocation(target);
         Component name = Component.text(target.getName() + " Tracker").color(TextColor.color(128, 0, 128));
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.text("Tracker"));
+        compassMeta.lore(lore);
         compassMeta.displayName(name);
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(targetlocation);
@@ -90,7 +93,7 @@ public class ManhuntGame implements Listener {
         Player player = event.getPlayer();
         if (manhuntOn &&
                 nearbyPlayers.contains(player) &&
-                player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS) &&
+                player.getInventory().getItemInMainHand().equals(compass) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (target.getLocation().getWorld().getEnvironment() !=
                     player.getLocation().getWorld().getEnvironment()) {

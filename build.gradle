@@ -11,7 +11,7 @@ tasks {
 }
 
 group = 'plugin.manhunt'
-version = '1.2'
+version = '1.2.1'
 
 sourceCompatibility = '16'
 targetCompatibility = '16'

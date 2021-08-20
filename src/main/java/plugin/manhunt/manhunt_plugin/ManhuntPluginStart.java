@@ -19,7 +19,7 @@ public class ManhuntPluginStart implements CommandExecutor {
             @NotNull Command command,
             @NotNull String label,
             @NotNull String[] args) {
-        if (!playerNameParser(args).isOnline()) {
+        if (!playerNameParser(args).isOnline() || !(sender instanceof Player)) {
             return false;
         }
         currentGames.add(new ManhuntGame(sender, args));
