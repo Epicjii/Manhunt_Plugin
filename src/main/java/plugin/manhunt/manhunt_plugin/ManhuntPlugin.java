@@ -14,7 +14,8 @@ public final class ManhuntPlugin extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
-        getCommand("manhuntStart").setExecutor(new ManhuntPluginStart());
+        getCommand("hunters").setExecutor(new Hunters());
+        getCommand("target").setExecutor(new Target());
         getCommand("manhuntStop").setExecutor(new ManhuntPluginStop());
     }
 

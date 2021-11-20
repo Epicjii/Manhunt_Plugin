@@ -4,13 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManhuntPluginStart implements CommandExecutor {
+public class Target implements CommandExecutor {
     public static List<ManhuntGame> currentGames = new ArrayList<>();
 
     @Override
@@ -19,15 +18,9 @@ public class ManhuntPluginStart implements CommandExecutor {
             @NotNull Command command,
             @NotNull String label,
             @NotNull String[] args) {
-        if (!playerNameParser(args).isOnline() || !(sender instanceof Player)) {
-            return false;
-        }
-        currentGames.add(new ManhuntGame(sender, args));
+
+        currentGames.add(new ManhuntGame(Hunters.hunters, Bukkit.getPlayer(args[0])));
+
         return true;
     }
-
-    public Player playerNameParser(String[] args) {
-        return Bukkit.getPlayer(args[0]);
-    }
 }
-

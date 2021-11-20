@@ -3,8 +3,6 @@ package plugin.manhunt.manhunt_plugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -21,33 +19,21 @@ import java.util.List;
 import static org.bukkit.Bukkit.getServer;
 
 public class ManhuntGame implements Listener {
-    Boolean manhuntOn = false;
-    List<Player> nearbyPlayers = new ArrayList<>();
     Player target;
     Location targetlocation;
     ItemStack compass = new ItemStack(Material.COMPASS);
     CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+    List<Player> hunters;
 
-    public ManhuntGame(CommandSender sender, String[] args) {
-        if (sender instanceof Player commandSender) {
-            target = playerNameParser(args);
-            for (Entity playerEntity : commandSender.getNearbyEntities(15, 15, 15)) {
-                if (playerEntity instanceof Player player
-                        && !playerEntity.getName().equals(target.getName())
-                ) {
-                    nearbyPlayers.add(player);
-                    player.getInventory().addItem(createCompass());
-                    player.sendRawMessage("The hunt is on! Your target is: " + target.getName());
-                }
-            }
-            nearbyPlayers.add(commandSender);
-            if (!commandSender.getName().equals(target.getName()) || args.length > 1) {
-                commandSender.getInventory().addItem(createCompass());
-            }
-            target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
-            registerEvent();
-            manhuntOn = true;
+    public ManhuntGame(List<Player> hunters, Player target) {
+        this.hunters = hunters;
+        this.target = target;
+        for (int i = 0; i < hunters.size(); i++) {
+            hunters.get(i).getInventory().addItem(createCompass());
+            hunters.get(i).sendRawMessage("The hunt is on! Your target is: " + target.getName());
         }
+        target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
+        registerEvent();
     }
 
     public void registerEvent() {
@@ -58,9 +44,6 @@ public class ManhuntGame implements Listener {
         HandlerList.unregisterAll(this);
     }
 
-    public Player playerNameParser(String[] args) {
-        return Bukkit.getPlayer(args[0]);
-    }
 
     public ItemStack createCompass() {
         targetlocation = getTargetLocation(target);
@@ -83,7 +66,7 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if (manhuntOn && nearbyPlayers.contains(player) && !player.getName().equals(target.getName())) {
+        if (hunters.contains(player)) {
             player.getInventory().addItem(createCompass());
         }
     }
@@ -91,9 +74,7 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (manhuntOn &&
-                nearbyPlayers.contains(player) &&
-                player.getInventory().getItemInMainHand().equals(compass) &&
+        if (hunters.contains(player) && player.getInventory().getItemInMainHand().equals(compass) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (target.getLocation().getWorld().getEnvironment() !=
                     player.getLocation().getWorld().getEnvironment()) {

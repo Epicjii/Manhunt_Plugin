@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ManhuntPluginStop implements CommandExecutor {
-    List<ManhuntGame> currentGames = ManhuntPluginStart.currentGames;
+    List<ManhuntGame> currentGames = Target.currentGames;
+    List<Player> hunters = Hunters.hunters;
 
     @Override
     public boolean onCommand(
@@ -22,19 +23,18 @@ public class ManhuntPluginStop implements CommandExecutor {
             return false;
         }
         for (ManhuntGame manhuntGame : currentGames) {
-            if (manhuntGame.nearbyPlayers.contains(sender)) {
-                ItemStack compass = manhuntGame.compass;
-                for (Player player : manhuntGame.nearbyPlayers) {
-                    if (player.getInventory().contains(compass) && compass.getItemMeta().hasLore()) {
-                        player.getInventory().remove(compass);
-                    }
-                    player.sendRawMessage("The Manhunt has ended!");
+            ItemStack compass = manhuntGame.compass;
+            for (Player player : manhuntGame.hunters) {
+                if (player.getInventory().contains(compass) && compass.getItemMeta().hasLore()) {
+                    player.getInventory().remove(compass);
                 }
-                manhuntGame.target.sendRawMessage("You are safe.... for now.");
-                currentGames.remove(manhuntGame);
-                manhuntGame.unRegisterEvent();
-                return true;
+                player.sendRawMessage("The Manhunt has ended!");
             }
+            manhuntGame.target.sendRawMessage("You are safe.... for now.");
+            currentGames.remove(manhuntGame);
+            hunters.clear();
+            manhuntGame.unRegisterEvent();
+            return true;
         }
         return false;
     }
