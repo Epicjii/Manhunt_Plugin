@@ -78,11 +78,8 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        System.out.println("Right Clicker");
-        System.out.println(hunters.contains(player) + ", " + activecompasses.contains(player.getInventory().getItemInMainHand()));
         if (hunters.contains(player) && activecompasses.contains(player.getInventory().getItemInMainHand()) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage("success"));
             if (target.getLocation().getWorld().getEnvironment() !=
                     player.getLocation().getWorld().getEnvironment()) {
                 player.sendRawMessage("The target is not in your dimension!");

@@ -23,7 +23,6 @@ public class Hunters implements CommandExecutor {
         for (String arg : args) {
             hunters.add(Bukkit.getPlayer(arg));
         }
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(hunters.toString()));
 
         return hunters.size() != 0; //if hunters list is empty command failed
     }

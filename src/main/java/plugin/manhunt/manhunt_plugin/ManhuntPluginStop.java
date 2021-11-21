@@ -24,11 +24,11 @@ public class ManhuntPluginStop implements CommandExecutor {
         }
         for (ManhuntGame manhuntGame : currentGames) {
             if (manhuntGame.hunters.contains(sender) || manhuntGame.target == sender) {
-                for (ItemStack compass : manhuntGame.activecompasses) {
-                    for (Player player : manhuntGame.hunters) {
+                for (Player player : manhuntGame.hunters) {
+                    for (ItemStack compass : manhuntGame.activecompasses) {
                         player.getInventory().remove(compass);
-                        player.sendRawMessage("The Manhunt has ended!");
                     }
+                    player.sendRawMessage("The Manhunt has ended!");
                 }
                 manhuntGame.target.sendRawMessage("You are safe.... for now.");
                 currentGames.remove(manhuntGame);
