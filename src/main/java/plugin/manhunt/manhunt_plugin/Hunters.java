@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hunters implements CommandExecutor {
-   public static List<Player> hunters = new ArrayList<>();
+    public static List<Player> hunters = new ArrayList<>();
 
 
     @Override
@@ -24,9 +24,7 @@ public class Hunters implements CommandExecutor {
             hunters.add(Bukkit.getPlayer(arg));
         }
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(hunters.toString()));
-        if (hunters.size() == 0) { //if hunters list is empty command failed
-            return false;
-        }
-        return true;
+
+        return hunters.size() != 0; //if hunters list is empty command failed
     }
 }
