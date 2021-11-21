@@ -28,9 +28,9 @@ public class ManhuntGame implements Listener {
     public ManhuntGame(List<Player> hunters, Player target) {
         this.hunters = hunters;
         this.target = target;
-        for (int i = 0; i < hunters.size(); i++) {
-            hunters.get(i).getInventory().addItem(createCompass());
-            hunters.get(i).sendRawMessage("The hunt is on! Your target is: " + target.getName());
+        for (Player hunter : hunters) {
+            hunter.getInventory().addItem(createCompass());
+            hunter.sendRawMessage("The hunt is on! Your target is: " + target.getName());
         }
         target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
         registerEvent();
