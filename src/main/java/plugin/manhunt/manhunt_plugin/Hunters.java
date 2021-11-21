@@ -10,8 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManhuntPluginStart implements CommandExecutor {
-    public static List<ManhuntGame> currentGames = new ArrayList<>();
+public class Hunters implements CommandExecutor {
+    public static List<Player> hunters = new ArrayList<>();
+
 
     @Override
     public boolean onCommand(
@@ -19,15 +20,10 @@ public class ManhuntPluginStart implements CommandExecutor {
             @NotNull Command command,
             @NotNull String label,
             @NotNull String[] args) {
-        if (!playerNameParser(args).isOnline() || !(sender instanceof Player)) {
-            return false;
+        for (String arg : args) {
+            hunters.add(Bukkit.getPlayer(arg));
         }
-        currentGames.add(new ManhuntGame(sender, args));
-        return true;
-    }
 
-    public Player playerNameParser(String[] args) {
-        return Bukkit.getPlayer(args[0]);
+        return hunters.size() != 0; //if hunters list is empty command failed
     }
 }
-
