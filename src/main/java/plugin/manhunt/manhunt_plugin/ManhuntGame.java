@@ -2,7 +2,10 @@ package plugin.manhunt.manhunt_plugin;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.*;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -21,8 +24,7 @@ import static org.bukkit.Bukkit.getServer;
 public class ManhuntGame implements Listener {
     Player target;
     Location targetlocation;
-    ItemStack compass = new ItemStack(Material.COMPASS);
-    CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+    List<ItemStack> activecompasses = new ArrayList<>();
     List<Player> hunters;
 
     public ManhuntGame(List<Player> hunters, Player target) {
@@ -50,11 +52,16 @@ public class ManhuntGame implements Listener {
         Component name = Component.text(target.getName() + " Tracker").color(TextColor.color(128, 0, 128));
         List<Component> lore = new ArrayList<>();
         lore.add(Component.text("Tracker"));
+
+        ItemStack compass = new ItemStack(Material.COMPASS);
+        CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+
         compassMeta.lore(lore);
         compassMeta.displayName(name);
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(targetlocation);
         compass.setItemMeta(compassMeta);
+        activecompasses.add(compass);
         return compass;
     }
 
@@ -74,7 +81,7 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (hunters.contains(player) && player.getInventory().getItemInMainHand().equals(compass) &&
+        if (hunters.contains(player) && activecompasses.contains(player.getInventory().getItemInMainHand()) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (target.getLocation().getWorld().getEnvironment() !=
                     player.getLocation().getWorld().getEnvironment()) {
