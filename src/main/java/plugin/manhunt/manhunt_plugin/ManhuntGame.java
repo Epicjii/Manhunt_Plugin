@@ -2,10 +2,7 @@ package plugin.manhunt.manhunt_plugin;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -81,6 +78,8 @@ public class ManhuntGame implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        System.out.println("Right Clicker");
+        System.out.println(hunters.contains(player) + ", " + activecompasses.contains(player.getInventory().getItemInMainHand()));
         if (hunters.contains(player) && activecompasses.contains(player.getInventory().getItemInMainHand()) &&
                 (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage("success"));

@@ -20,7 +20,6 @@ public class Target implements CommandExecutor {
             @NotNull String[] args) {
 
         currentGames.add(new ManhuntGame(Hunters.hunters, Bukkit.getPlayer(args[0])));
-        Hunters.hunters.clear();
 
         return true;
     }
