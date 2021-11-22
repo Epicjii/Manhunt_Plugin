@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ManhuntPluginStop implements CommandExecutor {
     List<ManhuntGame> currentGames = Target.currentGames;
-    List<Player> hunters = Hunters.hunters;
 
     @Override
     public boolean onCommand(
@@ -22,8 +21,10 @@ public class ManhuntPluginStop implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
+        List<Player> hunters = Hunters.map.get(sender);
+
         for (ManhuntGame manhuntGame : currentGames) {
-            if (manhuntGame.hunters.contains(sender) || manhuntGame.target == sender) {
+            if (manhuntGame.hunters.contains(sender)) {
                 for (Player player : manhuntGame.hunters) {
                     for (ItemStack compass : manhuntGame.activecompasses) {
                         player.getInventory().remove(compass);

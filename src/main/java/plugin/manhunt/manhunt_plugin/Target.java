@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ public class Target implements CommandExecutor {
             @NotNull String label,
             @NotNull String[] args) {
 
-        currentGames.add(new ManhuntGame(Hunters.hunters, Bukkit.getPlayer(args[0])));
+        List<Player> hunters = Hunters.map.get(sender);
+        currentGames.add(new ManhuntGame(hunters, Bukkit.getPlayer(args[0])));
 
         return true;
     }
