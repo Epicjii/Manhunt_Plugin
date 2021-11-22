@@ -16,7 +16,7 @@ public final class ManhuntPlugin extends JavaPlugin {
         instance = this;
         getCommand("hunters").setExecutor(new Hunters());
         getCommand("target").setExecutor(new Target());
-        getCommand("manhuntStop").setExecutor(new ManhuntPluginStop());
+        getCommand("endhunt").setExecutor(new ManhuntPluginStop());
     }
 
     @Override
