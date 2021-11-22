@@ -24,6 +24,6 @@ public class Hunters implements CommandExecutor {
             hunters.add(Bukkit.getPlayer(arg));
         }
 
-        return hunters.size() != 0; //if hunters list is empty command failed
+        return hunters.size() != 0; //if hunters list is empty, command failed
     }
 }

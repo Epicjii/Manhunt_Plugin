@@ -5,9 +5,10 @@ api-version: 1.17
 commands:
   hunters:
     description: set hunters
-    usage: /manhuntStart name
+    usage: /hunters [list of hunters]
   target:
     description: set hunted
-  manhuntStop:
+    usage: /target [target]
+  endhunt:
     description: Ends manhunt sim 9000
-    usage: /manhuntStop
+    usage: /endhunt

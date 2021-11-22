@@ -65,7 +65,6 @@ public class ManhuntGame implements Listener {
         return compass;
     }
 
-
     public Location getTargetLocation(Player target) {
         return target.getLocation();
     }
