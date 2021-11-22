@@ -29,7 +29,6 @@ public class Hunters implements CommandExecutor {
         for (String arg : args) {
             hunters.add(Bukkit.getPlayer(arg));
         }
-
         map.put(sender, hunters);
 
         return hunters.size() != 0; //if hunters list is empty, command failed
