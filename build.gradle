@@ -9,22 +9,7 @@ tasks {
     runServer {
         minecraftVersion("1.17.1")
     }
-    publishing {
-        repositories {
-            maven {
-                name = "GithubPackages"
-                url = uri("https://github.com/Epicjii/Manhunt_Plugin")
-                credentials {
-                    username = project.findProject("gpr.user") ?: System.getenv("Epicjii")
-                    password = project.findProject("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-                }
-            }
-        }
-        publications {
-            gpr(MavenPublication) {
-                from(components.java)
-            }
-        }
+    publish{
     }
 }
 
@@ -50,7 +35,23 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
 }
 
-
+publishing {
+    repositories {
+        maven {
+            name = "Manhunt_Plugin"
+            url = uri("https://github.com/Epicjii/Manhunt_Plugin")
+            credentials {
+                username = System.getenv("Epicjii")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
 /*processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
