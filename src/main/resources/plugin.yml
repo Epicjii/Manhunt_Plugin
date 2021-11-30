@@ -1,5 +1,5 @@
 name: Manhunt_Plugin
-version: 2.0.1
+version: 2.0.2
 main: plugin.manhunt.manhunt_plugin.ManhuntPlugin
 api-version: 1.17
 commands:
