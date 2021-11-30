@@ -1,17 +1,17 @@
-import org.apache.tools.ant.filters.ReplaceTokens
+
 
 plugins {
     id 'java'
-    id("xyz.jpenilla.run-paper") version("1.0.3")
+    id("xyz.jpenilla.run-paper") version("1.0.5")
 }
 tasks {
     runServer {
-        minecraftVersion("1.17.1")
+        minecraftVersion("1.18")
     }
 }
 
 group = 'plugin.manhunt'
-version = '2.0.0'
+version = '2.0.1'
 
 sourceCompatibility = '16'
 targetCompatibility = '16'
