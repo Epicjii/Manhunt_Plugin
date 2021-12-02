@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ManhuntPluginStop implements CommandExecutor {
+public class Endgame implements CommandExecutor {
     List<ManhuntGame> currentGames = Target.currentGames;
 
     @Override
@@ -34,6 +34,7 @@ public class ManhuntPluginStop implements CommandExecutor {
                 manhuntGame.target.sendRawMessage("You are safe.... for now.");
                 currentGames.remove(manhuntGame);
                 hunters.clear();
+                Hunters.map.remove(sender);
                 manhuntGame.unRegisterEvent();
                 return true;
             }
