@@ -1,7 +1,7 @@
 name: Manhunt_Plugin
-version: 1.2.1
+version: 2.0.3
 main: plugin.manhunt.manhunt_plugin.ManhuntPlugin
-api-version: 1.17
+api-version: 1.18
 commands:
   hunters:
     description: set hunters
@@ -9,6 +9,9 @@ commands:
   target:
     description: set hunted
     usage: /target [target]
-  endhunt:
+  endgame:
     description: Ends manhunt sim 9000
-    usage: /endhunt
+    usage: /endgame
+  listgames:
+    description: Lists all active games
+    usage: /listgames

@@ -26,10 +26,13 @@ public class ManhuntGame implements Listener {
     Location targetlocation;
     List<ItemStack> activecompasses = new ArrayList<>();
     List<Player> hunters;
+    List<Player> players = new ArrayList<>();
 
     public ManhuntGame(List<Player> hunters, Player target) {
         this.hunters = hunters;
         this.target = target;
+        players.addAll(hunters);
+        players.add(target);
         for (Player hunter : hunters) {
             hunter.getInventory().addItem(createCompass());
             hunter.sendRawMessage("The hunt is on! Your target is: " + target.getName());
@@ -45,7 +48,6 @@ public class ManhuntGame implements Listener {
     public void unRegisterEvent() {
         HandlerList.unregisterAll(this);
     }
-
 
     public ItemStack createCompass() {
         targetlocation = getTargetLocation(target);
@@ -70,10 +72,20 @@ public class ManhuntGame implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerRespawnEvent event) {
+    public void onHunterDeath(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if (hunters.contains(player)) {
             player.getInventory().addItem(createCompass());
+        }
+    }
+
+    @EventHandler
+    public void onTargetDeath(PlayerRespawnEvent event) {
+        Player target = event.getPlayer();
+        if (target == this.target) {
+            for (Player player : players) {
+                player.sendMessage(target.getName() + " has died. The Hunters Win!");
+            }
         }
     }
 

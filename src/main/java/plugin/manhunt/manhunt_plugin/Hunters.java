@@ -31,6 +31,12 @@ public class Hunters implements CommandExecutor {
         }
         map.put(sender, hunters);
 
+        StringBuilder hunterslist = new StringBuilder();
+        for (Player hunter : hunters) {
+            hunterslist.append(" ").append(hunter.getName());
+        }
+        sender.sendMessage("Adding" + hunterslist + " to hunters");
+
         return hunters.size() != 0; //if hunters list is empty, command failed
     }
 }
