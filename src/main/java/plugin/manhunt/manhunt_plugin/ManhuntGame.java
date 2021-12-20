@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -69,6 +70,13 @@ public class ManhuntGame implements Listener {
 
     public Location getTargetLocation(Player target) {
         return target.getLocation();
+    }
+
+    @EventHandler
+    public void compassRemover9000(PlayerDeathEvent event) {
+        for (ItemStack compass : activecompasses) {
+            event.getDrops().remove(compass);
+        }
     }
 
     @EventHandler
