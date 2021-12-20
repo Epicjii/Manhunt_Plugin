@@ -86,6 +86,7 @@ public class ManhuntGame implements Listener {
             for (Player player : players) {
                 player.sendMessage(target.getName() + " has died. The Hunters Win!");
             }
+            Endgame.endgame(players, target);
         }
     }
 
