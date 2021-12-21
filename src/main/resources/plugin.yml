@@ -1,7 +1,7 @@
 name: Manhunt_Plugin
-version: 2.0.3
+version: 2.0.4
 main: plugin.manhunt.manhunt_plugin.ManhuntPlugin
-api-version: 1.18
+api-version: 1.18.1
 commands:
   hunters:
     description: set hunters
