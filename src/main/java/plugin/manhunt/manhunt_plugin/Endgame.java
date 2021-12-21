@@ -36,10 +36,9 @@ public class Endgame implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        List<Player> hunters = Hunters.map.get(sender);
 
         for (ManhuntGame manhuntGame : currentGames.keySet()) {
-            if (manhuntGame.hunters.contains(sender)) {
+            if (manhuntGame.players.contains(sender)) {
                 for (Player player : manhuntGame.hunters) {
                     for (ItemStack compass : manhuntGame.activecompasses) {
                         player.getInventory().remove(compass);
@@ -47,8 +46,6 @@ public class Endgame implements CommandExecutor {
                     player.sendRawMessage("The Manhunt has ended!");
                 }
                 currentGames.remove(manhuntGame);
-                hunters.clear();
-                Hunters.map.remove(sender);
                 manhuntGame.unRegisterEvent();
                 return true;
             }
