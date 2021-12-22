@@ -24,6 +24,7 @@ public class ListGames implements CommandExecutor {
             for (ManhuntGame manhuntGame : currentGames.keySet()) {
                 sender.sendMessage(manhuntGame.target.getName() + "'s Hunt");
             }
+            return true;
         }
         sender.sendMessage("There are currently no active games.");
         return true;
