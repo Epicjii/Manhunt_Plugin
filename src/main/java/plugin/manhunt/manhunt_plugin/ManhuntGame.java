@@ -11,6 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -72,6 +75,30 @@ public class ManhuntGame implements Listener {
     }
 
     @EventHandler
+    public void uCantDepositThis(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() != event.getPlayer()) {
+            for (ItemStack compass : activecompasses) {
+                event.getInventory().remove(compass);
+            }
+        }
+    }
+
+    @EventHandler
+    public void uCantDropThis(PlayerDropItemEvent event) {
+        ItemStack dropped = event.getItemDrop().getItemStack();
+        if (activecompasses.contains(dropped)) {
+            event.getItemDrop().remove();
+        }
+    }
+
+    @EventHandler
+    public void compassRemover9000(PlayerDeathEvent event) {
+        for (ItemStack compass : activecompasses) {
+            event.getDrops().remove(compass);
+        }
+    }
+
+    @EventHandler
     public void onHunterDeath(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if (hunters.contains(player)) {
@@ -86,6 +113,7 @@ public class ManhuntGame implements Listener {
             for (Player player : players) {
                 player.sendMessage(target.getName() + " has died. The Hunters Win!");
             }
+            Endgame.endgame(this);
         }
     }
 
