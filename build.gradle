@@ -37,3 +37,9 @@ dependencies {
         filter ReplaceTokens, tokens: [version: version]
     }
 }*/
+
+task getCurrentVersion {
+    doFirst {
+        System.out.println(version)
+    }
+}
