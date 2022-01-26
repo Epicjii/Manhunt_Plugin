@@ -39,7 +39,7 @@ public class Endgame implements CommandExecutor {
 
         for (ManhuntGame manhuntGame : currentGames.keySet()) {
             if (manhuntGame.players.contains(sender)) {
-                for (Player player : manhuntGame.hunters) {
+                for (Player player : manhuntGame.players) {
                     for (ItemStack compass : manhuntGame.activecompasses) {
                         player.getInventory().remove(compass);
                     }
