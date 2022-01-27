@@ -36,7 +36,6 @@ public class Endgame implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-
         for (ManhuntGame manhuntGame : currentGames.keySet()) {
             if (manhuntGame.players.contains(sender)) {
                 for (Player player : manhuntGame.players) {
@@ -52,6 +51,4 @@ public class Endgame implements CommandExecutor {
         }
         return false;
     }
-
-
 }
