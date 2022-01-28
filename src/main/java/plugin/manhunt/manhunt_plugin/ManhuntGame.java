@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
+import plugin.manhunt.manhunt_plugin.commands.Endgame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ import java.util.List;
 import static org.bukkit.Bukkit.getServer;
 
 public class ManhuntGame implements Listener {
-    Player target;
+    public Player target;
+    public List<ItemStack> activecompasses = new ArrayList<>();
+    public List<Player> hunters;
+    public List<Player> players = new ArrayList<>();
     Location targetlocation;
-    List<ItemStack> activecompasses = new ArrayList<>();
-    List<Player> hunters;
-    List<Player> players = new ArrayList<>();
 
     public ManhuntGame(List<Player> hunters, Player target) {
         this.hunters = hunters;

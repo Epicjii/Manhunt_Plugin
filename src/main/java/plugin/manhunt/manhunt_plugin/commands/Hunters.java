@@ -1,4 +1,4 @@
-package plugin.manhunt.manhunt_plugin;
+package plugin.manhunt.manhunt_plugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,11 +15,7 @@ public class Hunters implements CommandExecutor {
     public static HashMap<CommandSender, List<Player>> map = new HashMap<>();
 
     @Override
-    public boolean onCommand(
-            @NotNull CommandSender sender,
-            @NotNull Command command,
-            @NotNull String label,
-            @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (!(sender instanceof Player)) {
             return false;

@@ -1,4 +1,4 @@
-package plugin.manhunt.manhunt_plugin;
+package plugin.manhunt.manhunt_plugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -7,9 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import plugin.manhunt.manhunt_plugin.ManhuntGame;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Endgame implements CommandExecutor {
     static HashMap<ManhuntGame, Player> currentGames = Target.currentGames;
