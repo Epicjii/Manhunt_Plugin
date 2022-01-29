@@ -1,4 +1,4 @@
-package plugin.manhunt.manhunt_plugin;
+package plugin.manhunt.manhunt_plugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -27,7 +27,9 @@ public class Hunters implements CommandExecutor {
 
         List<Player> hunters = new ArrayList<>();
         for (String arg : args) {
-            hunters.add(Bukkit.getPlayer(arg));
+            if (Bukkit.getPlayer(arg) != null) {
+                hunters.add(Bukkit.getPlayer(arg));
+            }
         }
         map.put(sender, hunters);
 

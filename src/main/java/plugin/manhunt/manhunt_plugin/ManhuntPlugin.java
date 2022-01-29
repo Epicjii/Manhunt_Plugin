@@ -1,6 +1,10 @@
 package plugin.manhunt.manhunt_plugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import plugin.manhunt.manhunt_plugin.commands.Endgame;
+import plugin.manhunt.manhunt_plugin.commands.Hunters;
+import plugin.manhunt.manhunt_plugin.commands.ListGames;
+import plugin.manhunt.manhunt_plugin.commands.Target;
 
 public final class ManhuntPlugin extends JavaPlugin {
 
