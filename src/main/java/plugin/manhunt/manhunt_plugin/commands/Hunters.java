@@ -15,7 +15,11 @@ public class Hunters implements CommandExecutor {
     public static HashMap<CommandSender, List<Player>> map = new HashMap<>();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String label,
+            @NotNull String[] args) {
 
         if (!(sender instanceof Player)) {
             return false;
@@ -23,7 +27,9 @@ public class Hunters implements CommandExecutor {
 
         List<Player> hunters = new ArrayList<>();
         for (String arg : args) {
-            hunters.add(Bukkit.getPlayer(arg));
+            if (Bukkit.getPlayer(arg) != null) {
+                hunters.add(Bukkit.getPlayer(arg));
+            }
         }
         map.put(sender, hunters);
 

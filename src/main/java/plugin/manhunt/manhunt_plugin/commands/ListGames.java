@@ -1,7 +1,6 @@
 package plugin.manhunt.manhunt_plugin.commands;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
@@ -26,8 +25,8 @@ public class ListGames implements CommandExecutor {
 
         if (!currentGames.isEmpty()) {
             for (ManhuntGame manhuntGame : currentGames.keySet()) {
-                sender.sendMessage(Component.text(manhuntGame.target.getName() + "'s Hunt").decorate(TextDecoration.UNDERLINED).hoverEvent(
-                        HoverEvent.showText(Component.text(playersToString(manhuntGame.hunters)))).clickEvent(ClickEvent.runCommand("/say hi")));
+                sender.sendMessage(Component.text(manhuntGame.target.getName() + "'s Hunt").decorate(TextDecoration.UNDERLINED)
+                        .hoverEvent(HoverEvent.showText(Component.text(playersToString(manhuntGame.hunters)))));
             }
             return true;
         }
@@ -41,7 +40,6 @@ public class ListGames implements CommandExecutor {
         for (Player player : players) {
             if (players.size() == 1) {
                 hunterNames.append(player.getName());
-
                 return hunterNames.toString();
             }
             hunterNames.append(player.getName()).append(", ");
