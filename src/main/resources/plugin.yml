@@ -15,3 +15,7 @@ commands:
   listgames:
     description: Lists all active games
     usage: /listgames
+  newgame:
+    description: creates new game
+    usage: /newgame
+    aliases: /creategame, /ng

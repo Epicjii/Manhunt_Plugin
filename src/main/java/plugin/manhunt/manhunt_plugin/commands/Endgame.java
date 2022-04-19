@@ -24,7 +24,6 @@ public class Endgame implements CommandExecutor {
             }
         }
         currentGames.remove(manhuntGame);
-        manhuntGame.unRegisterEvent();
     }
 
     @Override
@@ -45,7 +44,6 @@ public class Endgame implements CommandExecutor {
                     player.sendRawMessage("The Manhunt has ended!");
                 }
                 currentGames.remove(manhuntGame);
-                manhuntGame.unRegisterEvent();
                 return true;
             }
         }
