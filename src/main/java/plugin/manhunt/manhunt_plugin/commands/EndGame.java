@@ -7,12 +7,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import plugin.manhunt.manhunt_plugin.ManhuntGame;
+import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
+import plugin.manhunt.manhunt_plugin.ManhuntPlugin;
 
-import java.util.HashMap;
+public class EndGame implements CommandExecutor {
 
-public class Endgame implements CommandExecutor {
-    static HashMap<ManhuntGame, Player> currentGames = Target.currentGames;
 
     public static void endgame(ManhuntGame manhuntGame) {
         for (Player player : manhuntGame.players) {
@@ -23,7 +22,7 @@ public class Endgame implements CommandExecutor {
                 player.getInventory().remove(compass);
             }
         }
-        currentGames.remove(manhuntGame);
+        ManhuntPlugin.gameData.removeGame(manhuntGame);
     }
 
     @Override
@@ -35,7 +34,7 @@ public class Endgame implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        for (ManhuntGame manhuntGame : currentGames.keySet()) {
+        for (ManhuntGame manhuntGame : ManhuntPlugin.gameData.currentGames) {
             if (manhuntGame.players.contains(sender)) {
                 for (Player player : manhuntGame.players) {
                     for (ItemStack compass : manhuntGame.activecompasses) {
@@ -43,7 +42,7 @@ public class Endgame implements CommandExecutor {
                     }
                     player.sendRawMessage("The Manhunt has ended!");
                 }
-                currentGames.remove(manhuntGame);
+                ManhuntPlugin.gameData.removeGame(manhuntGame);
                 return true;
             }
         }

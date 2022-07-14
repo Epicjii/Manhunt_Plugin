@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import plugin.manhunt.manhunt_plugin.ManhuntPlugin;
+import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 
 import java.util.HashMap;
 
@@ -18,6 +20,8 @@ public class TargetGui implements Listener {
     static Inventory targetgui;
     static HashMap<Player, ItemStack> playerHeadMap = new HashMap<>();
     static HashMap<ItemStack, Player> headPlayermap = new HashMap<>();
+
+    public Player target;
 
     public void openNewGui(Player player) {
         targetgui = Bukkit.createInventory(null, 54, Component.text("Select a Target"));
@@ -35,6 +39,7 @@ public class TargetGui implements Listener {
         Player player = event.getPlayer();
         ItemStack playerhead = new ItemStack(Material.PLAYER_HEAD);
         playerhead.editMeta(SkullMeta.class, meta -> meta.setOwningPlayer(player));
+        ((SkullMeta)playerhead.getItemMeta()).getOwningPlayer();
         playerHeadMap.put(player, playerhead);
         headPlayermap.put(playerhead, player);
     }
@@ -46,18 +51,29 @@ public class TargetGui implements Listener {
         }
         event.setCancelled(true);
 
+
         Player player = (Player) event.getWhoClicked();
         ItemStack targethead = null;
 
-        for (ItemStack head : playerHeadMap.values()) {
-            if (event.getCurrentItem() != null) {
-                if (!event.getCurrentItem().equals(head)) {
-                    return;
+        for (ItemStack head : headPlayermap.keySet()) {
+            if(event.getCurrentItem() != null) {
+                if (event.getCurrentItem().getItemMeta().equals(head.getItemMeta())) {
+                    targethead = head;
+                    break;
                 }
-                targethead = head;
             }
+
         }
-        Player target = headPlayermap.get(targethead);
-        player.closeInventory();
+
+        if (targethead == null) {
+            Bukkit.getScheduler().runTask(ManhuntPlugin.getInstance(), () -> player.closeInventory());
+            return;
+        }
+
+        target = headPlayermap.get(targethead);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ManhuntPlugin.getInstance(), player::closeInventory);
+
+        new ManhuntGame(player, target);
+
     }
 }

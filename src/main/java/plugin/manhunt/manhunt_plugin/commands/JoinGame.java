@@ -5,10 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
-import plugin.manhunt.manhunt_plugin.gui.TargetGui;
+import plugin.manhunt.manhunt_plugin.gui.JoinGui;
 
-public class CreateGame implements CommandExecutor {
+public class JoinGame implements CommandExecutor {
 
     @Override
     public boolean onCommand(
@@ -17,12 +16,10 @@ public class CreateGame implements CommandExecutor {
             @NotNull String label,
             @NotNull String[] args) {
 
-        if (!(sender instanceof Player)) {
-            return false;
-        }
+        JoinGui joinGui = new JoinGui();
+        joinGui.openNewGui((Player) sender);
 
-        TargetGui targetGui = new TargetGui();
-        targetGui.openNewGui((Player) sender);
+
         return true;
     }
 }
