@@ -5,10 +5,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 import plugin.manhunt.manhunt_plugin.ManhuntPlugin;
+import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 
 public class EndGame implements CommandExecutor {
 
@@ -41,8 +42,10 @@ public class EndGame implements CommandExecutor {
                         player.getInventory().remove(compass);
                     }
                     player.sendRawMessage("The Manhunt has ended!");
+                    manhuntGame.players.remove(player);
                 }
                 ManhuntPlugin.gameData.removeGame(manhuntGame);
+                HandlerList.unregisterAll(manhuntGame);
                 return true;
             }
         }

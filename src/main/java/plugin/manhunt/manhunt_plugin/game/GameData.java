@@ -1,7 +1,5 @@
 package plugin.manhunt.manhunt_plugin.game;
 
-import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
-
 import java.util.ArrayList;
 
 public class GameData {

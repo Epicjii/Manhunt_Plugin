@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 import plugin.manhunt.manhunt_plugin.gui.TargetGui;
 
 public class CreateGame implements CommandExecutor {

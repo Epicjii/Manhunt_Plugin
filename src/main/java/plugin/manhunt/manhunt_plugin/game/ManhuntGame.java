@@ -14,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
@@ -79,6 +80,19 @@ public class ManhuntGame implements Listener {
 
     public Location getTargetLocation(Player target) {
         return target.getLocation();
+    }
+
+    @EventHandler
+    public void onRageQuit(PlayerQuitEvent event) {
+        Player rageQuitter = event.getPlayer();
+        players.remove(rageQuitter);
+        hunters.remove(rageQuitter);
+        if (rageQuitter.equals(target)) {
+            EndGame.endgame(this);
+        }
+        for (ItemStack compass : activecompasses) {
+            rageQuitter.getInventory().remove(compass);
+        }
     }
 
     @EventHandler

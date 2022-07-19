@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 import plugin.manhunt.manhunt_plugin.ManhuntPlugin;
+import plugin.manhunt.manhunt_plugin.game.ManhuntGame;
 
 public class JoinGui implements Listener {
     static Inventory joingui;

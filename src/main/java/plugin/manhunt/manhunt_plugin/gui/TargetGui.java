@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -39,9 +40,15 @@ public class TargetGui implements Listener {
         Player player = event.getPlayer();
         ItemStack playerhead = new ItemStack(Material.PLAYER_HEAD);
         playerhead.editMeta(SkullMeta.class, meta -> meta.setOwningPlayer(player));
-        ((SkullMeta)playerhead.getItemMeta()).getOwningPlayer();
+        ((SkullMeta) playerhead.getItemMeta()).getOwningPlayer();
         playerHeadMap.put(player, playerhead);
         headPlayermap.put(playerhead, player);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        playerHeadMap.remove(event.getPlayer());
+        headPlayermap.values().remove(event.getPlayer());
     }
 
     @EventHandler
@@ -56,13 +63,12 @@ public class TargetGui implements Listener {
         ItemStack targethead = null;
 
         for (ItemStack head : headPlayermap.keySet()) {
-            if(event.getCurrentItem() != null) {
+            if (event.getCurrentItem() != null) {
                 if (event.getCurrentItem().getItemMeta().equals(head.getItemMeta())) {
                     targethead = head;
                     break;
                 }
             }
-
         }
 
         if (targethead == null) {
