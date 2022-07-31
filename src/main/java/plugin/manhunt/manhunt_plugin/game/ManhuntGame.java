@@ -1,4 +1,4 @@
-package plugin.manhunt.manhunt_plugin;
+package plugin.manhunt.manhunt_plugin.game;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -8,17 +8,18 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
-import plugin.manhunt.manhunt_plugin.commands.Endgame;
+import plugin.manhunt.manhunt_plugin.ManhuntPlugin;
+import plugin.manhunt.manhunt_plugin.commands.EndGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +29,26 @@ import static org.bukkit.Bukkit.getServer;
 public class ManhuntGame implements Listener {
     public Player target;
     public List<ItemStack> activecompasses = new ArrayList<>();
-    public List<Player> hunters;
+    public List<Player> hunters = new ArrayList<>();
     public List<Player> players = new ArrayList<>();
     Location targetlocation;
 
-    public ManhuntGame(List<Player> hunters, Player target) {
-        this.hunters = hunters;
+    public ManhuntGame(Player hunter, Player target) {
+        registerEvent();
+
+        this.hunters.add(hunter);
         this.target = target;
         players.addAll(hunters);
         players.add(target);
-        for (Player hunter : hunters) {
-            hunter.getInventory().addItem(createCompass());
-            hunter.sendRawMessage("The hunt is on! Your target is: " + target.getName());
-        }
+        hunter.getInventory().addItem(createCompass());
+
+        hunter.sendRawMessage("The hunt is on! Your target is: " + target.getName());
         target.sendRawMessage("The hunt is on! Good luck.... You'll need it.");
-        registerEvent();
+        ManhuntPlugin.gameData.addGame(this);
     }
 
     public void registerEvent() {
         getServer().getPluginManager().registerEvents(this, ManhuntPlugin.getInstance());
-    }
-
-    public void unRegisterEvent() {
-        HandlerList.unregisterAll(this);
     }
 
     public ItemStack createCompass() {
@@ -71,8 +69,30 @@ public class ManhuntGame implements Listener {
         return compass;
     }
 
+    public void onHunterJoin(Player newhunter) {
+        this.hunters.add(newhunter);
+        players.add(newhunter);
+        newhunter.getInventory().addItem(createCompass());
+
+        newhunter.sendRawMessage("The hunt is on! Your target is: " + target.getName());
+        target.sendRawMessage("The hunt increases! " + newhunter.getName() + " has joined the hunt!");
+    }
+
     public Location getTargetLocation(Player target) {
         return target.getLocation();
+    }
+
+    @EventHandler
+    public void onRageQuit(PlayerQuitEvent event) {
+        Player rageQuitter = event.getPlayer();
+        players.remove(rageQuitter);
+        hunters.remove(rageQuitter);
+        if (rageQuitter.equals(target)) {
+            EndGame.endgame(this);
+        }
+        for (ItemStack compass : activecompasses) {
+            rageQuitter.getInventory().remove(compass);
+        }
     }
 
     @EventHandler
@@ -114,17 +134,15 @@ public class ManhuntGame implements Listener {
             for (Player player : players) {
                 player.sendMessage(target.getName() + " has died. The Hunters Win!");
             }
-            Endgame.endgame(this);
+            EndGame.endgame(this);
         }
     }
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (hunters.contains(player) && activecompasses.contains(player.getInventory().getItemInMainHand()) &&
-                (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            if (target.getLocation().getWorld().getEnvironment() !=
-                    player.getLocation().getWorld().getEnvironment()) {
+        if (hunters.contains(player) && activecompasses.contains(player.getInventory().getItemInMainHand()) && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+            if (target.getLocation().getWorld().getEnvironment() != player.getLocation().getWorld().getEnvironment()) {
                 player.sendRawMessage("The target is not in your dimension!");
                 return;
             }
