@@ -132,7 +132,7 @@ public class ManhuntGame implements Listener {
         Player target = event.getPlayer();
         if (target == this.target) {
             for (Player player : players) {
-                player.sendMessage(target.getName() + " has died. The Hunters Win!");
+                player.sendRawMessage(target.getName() + " has died. The Hunters Win!");
             }
             EndGame.endgame(this);
         }

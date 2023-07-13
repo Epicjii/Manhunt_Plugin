@@ -20,7 +20,7 @@ public class JoinGui implements Listener {
         joingui = Bukkit.createInventory(null, 54, Component.text("Select a Game to Join"));
         int i = 0;
         for (ManhuntGame game : ManhuntPlugin.gameData.currentGames) {
-            joingui.setItem(i, TargetGui.playerHeadMap.get(game.target));
+            joingui.setItem(i, TargetGui.playerToHeadMap.get(game.target));
 
             i++;
         }
@@ -38,7 +38,7 @@ public class JoinGui implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack targethead = null;
 
-        for (ItemStack head : TargetGui.headPlayermap.keySet()) {
+        for (ItemStack head : TargetGui.headToPlayermap.keySet()) {
             if (event.getCurrentItem() != null) {
                 if (event.getCurrentItem().getItemMeta().equals(head.getItemMeta())) {
                     targethead = head;
@@ -50,7 +50,7 @@ public class JoinGui implements Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(ManhuntPlugin.getInstance(), player::closeInventory);
         }
 
-        target = TargetGui.headPlayermap.get(targethead);
+        target = TargetGui.headToPlayermap.get(targethead);
         for (ManhuntGame game : ManhuntPlugin.gameData.currentGames) {
             if (game.target == target && !game.players.contains(player)) {
                 game.onHunterJoin(player);
