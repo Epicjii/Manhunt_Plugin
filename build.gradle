@@ -9,7 +9,7 @@ tasks {
 }
 
 group = 'plugin.manhunt'
-version = '3.0.0'
+version = '4.0.0'
 
 sourceCompatibility = '17'
 targetCompatibility = '17'
